@@ -15,7 +15,8 @@ import {
   Item,
   Label,
   Input,
-  ListItem
+  ListItem,
+  IconNB
 } from "native-base";
 import styles from "./styles";
 
@@ -86,11 +87,15 @@ class OrderEdit extends Component {
       paid:0,
       weight:0,
       totalPrice:0,
-      contactName:''
+      contactName:'',
+
+
+      isWeightValid: true
     }
   }
 
   componentDidMount(){
+    console.log('component did mount!!');
     var orderId = this.props.navigation.state.params.orderId;
     return fetch('https://simplestorekitws.azurewebsites.net/getorderbyid/' + orderId)
       .then((response) => response.json())
@@ -111,6 +116,12 @@ class OrderEdit extends Component {
         console.error(error);
       });
 
+  }
+
+  weightChanged = ()=>{
+
+
+    console.log('weight: '+ this.state.weight + ' valid: ' +this.state.isWeightValid);
   }
 
   render() {
@@ -137,13 +148,21 @@ class OrderEdit extends Component {
             <Label>Tên khách hàng</Label>
             <Input value={this.state.contactName}/>
           </Item>
-          <Item stackedLabel last>
+          <Item success={this.state.isWeightValid} error={!this.state.isWeightValid}>
+            <Icon active name="logo-dropbox" />
             <Label>Số lượng</Label>
-            <Input secureTextEntry value={this.state.weight} />
+            <Input value={this.state.weight} onChangeText={(text)=>
+              {
+                this.setState({isWeightValid:text > 0 ? true : false});
+
+              }} keyboardType = 'numeric' />
+            <IconNB name={this.state.isWeightValid ? "ios-checkmark-circle" : "ios-close-circle"} />
           </Item>
-          <Item stackedLabel last>
+          <Item success>
+            <Icon active name="logo-usd" />
             <Label>Giá</Label>
             <Input value={this.state.price*this.state.weight}/>
+            <IconNB name="ios-checkmark-circle" />
           </Item>
         </Form>
         <Button block style={{ margin: 15, marginTop: 50 }}>
