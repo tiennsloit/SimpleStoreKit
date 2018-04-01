@@ -16,7 +16,9 @@ import {
   Label,
   Input,
   ListItem,
-  IconNB
+  IconNB,
+  Picker,
+  CheckBox
 } from "native-base";
 import styles from "./styles";
 
@@ -88,9 +90,14 @@ class OrderEdit extends Component {
       weight:0,
       totalPrice:0,
       contactName:'',
+      productTypeId:undefined,
 
 
-      isWeightValid: true
+      isWeightValid: true,
+      isPriceValid: true,
+      isPaidValid: true,
+      isProductTypeValid:true,
+      isReceived: true
     }
   }
 
@@ -106,7 +113,10 @@ class OrderEdit extends Component {
           weight:responseJson.weight,
           productTypeId: responseJson.productType.id,
           price:responseJson.productType.price,
-          contactName: responseJson.contact.name
+          paid:responseJson.productType.paid,
+          contactName: responseJson.contact.name,
+          isReceived: responseJson.receivedreceived > 0
+
         }, function(){
 
         });
@@ -158,12 +168,58 @@ class OrderEdit extends Component {
               }} keyboardType = 'numeric' />
             <IconNB name={this.state.isWeightValid ? "ios-checkmark-circle" : "ios-close-circle"} />
           </Item>
-          <Item success>
+          <Item success={this.state.isPriceValid} error={!this.state.isPriceValid}>
             <Icon active name="logo-usd" />
-            <Label>Giá</Label>
-            <Input value={this.state.price*this.state.weight}/>
+            <Label>Giá:</Label>
+            <Input value={this.state.price*this.state.weight} onChangeText={(text)=>{
+              this.setState({isPriceValid:text > 0 ? true:false});
+            }} />
             <IconNB name="ios-checkmark-circle" />
           </Item>
+          <Item success={this.state.isPaidValid} error={!this.state.isPaidValid}>
+            <Icon active name="calculator" />
+            <Label>Tiền Nhận:</Label>
+            <Input value={this.state.paid} onChangeText={(text)=>{
+              this.setState({isPaidValid:text > 0 ? true:false});
+            }} />
+            <IconNB name="ios-checkmark-circle" />
+          </Item>
+
+          <Item success={this.state.isProductTypeValid} error={!this.state.isProductTypeValid}>
+          <Icon active name="archive" />
+          <Label>Loại hàng hoá:</Label>
+          <Picker
+            mode="dropdown"
+            iosIcon={<Icon name="ios-arrow-down-outline" />}
+            style={{ width: undefined }}
+            placeholder="Chọn mặt hàng"
+            placeholderStyle={{ color: "#bfc6ea" }}
+            selectedValue={this.state.productTypeId}
+            onValueChange={(value)=>{
+              this.setState({productTypeId:value});
+            }}
+          >
+            <Item label="Wallet" value="1" />
+            <Item label="ATM Card" value="2" />
+            <Item label="Debit Card" value="3" />
+            <Item label="Credit Card" value="4" />
+            <Item label="Net Banking" value="5" />
+          </Picker>
+          </Item>
+          <Item success={this.state.isReceived} error={!(this.state.isReceived)}>
+            <Icon active name="cart" />
+            <Label>Đã giao hàng:</Label>
+            <CheckBox
+              color={this.state.isReceived? "green" : "red"}
+              checked={this.state.isReceived}
+              onPress={() => {
+                this.setState({isReceived:!this.state.isReceived});
+              }
+            }
+            />
+
+          </Item>
+
         </Form>
         <Button block style={{ margin: 15, marginTop: 50 }}>
           <Text>Lưu</Text>
