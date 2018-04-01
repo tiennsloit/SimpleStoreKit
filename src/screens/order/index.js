@@ -18,7 +18,8 @@ import {
   ListItem,
   IconNB,
   Picker,
-  CheckBox
+  CheckBox,
+  NumericInput
 } from "native-base";
 import styles from "./styles";
 
@@ -84,11 +85,11 @@ class OrderEdit extends Component {
     {
       isLoading: true,
       productTypeId: 1,
-      productPrice:0,
-      price:0,
-      paid:0,
-      weight:0,
-      totalPrice:0,
+      productPrice:"0",
+      price:"0",
+      paid:"0",
+      weight:"0",
+      totalPrice:"0",
       contactName:'',
       productTypeId:undefined,
 
@@ -107,15 +108,20 @@ class OrderEdit extends Component {
     return fetch('https://simplestorekitws.azurewebsites.net/getorderbyid/' + orderId)
       .then((response) => response.json())
       .then((responseJson) => {
-
         this.setState({
           isLoading: false,
           weight:responseJson.weight,
           productTypeId: responseJson.productType.id,
-          price:responseJson.productType.price,
-          paid:responseJson.productType.paid,
+          price:responseJson.price,
+          paid:responseJson.paid,
           contactName: responseJson.contact.name,
-          isReceived: responseJson.receivedreceived > 0
+          isReceived: responseJson.receivedreceived > 0,
+
+          isWeightValid: responseJson.weight > 0,
+          isPriceValid: responseJson.productType.price > 0,
+          isPaidValid: responseJson.productType.paid > 0,
+          isProductTypeValid:responseJson.productType.id > 0
+
 
         }, function(){
 
@@ -161,28 +167,54 @@ class OrderEdit extends Component {
           <Item success={this.state.isWeightValid} error={!this.state.isWeightValid}>
             <Icon active name="logo-dropbox" />
             <Label>Số lượng</Label>
-            <Input value={this.state.weight} onChangeText={(text)=>
+            <Input value={this.state.weight.toString()} onChangeText={(text)=>
               {
-                this.setState({isWeightValid:text > 0 ? true : false});
+                this.setState({
+                  isWeightValid:text > 0 ? true : false,
+                  weight:text,
+                  paid:text*this.state.price,
+                  isPaidValid:this.state.paid>0
+                });
+
 
               }} keyboardType = 'numeric' />
             <IconNB name={this.state.isWeightValid ? "ios-checkmark-circle" : "ios-close-circle"} />
           </Item>
+
+          <Item success={this.state.isPriceValid} error={!this.state.isPriceValid}>
+            <Icon active name="logo-usd" />
+            <Label>Đơn Giá:</Label>
+            <Input value={this.state.price.toString()} onChangeText={(text)=>{
+              this.setState({
+                isPriceValid:text > 0 ? true:false,
+                price:text,
+                paid:text*this.state.weight,
+                isPaidValid:this.state.paid>0
+              });
+
+            }} />
+            <IconNB name={this.state.isPriceValid ? "ios-checkmark-circle" : "ios-close-circle"} />
+          </Item>
+
           <Item success={this.state.isPriceValid} error={!this.state.isPriceValid}>
             <Icon active name="logo-usd" />
             <Label>Giá:</Label>
-            <Input value={this.state.price*this.state.weight} onChangeText={(text)=>{
+            <Input disabled value={(this.state.price*this.state.weight).toString()} onChangeText={(text)=>{
               this.setState({isPriceValid:text > 0 ? true:false});
             }} />
-            <IconNB name="ios-checkmark-circle" />
+            <IconNB name={this.state.isPriceValid ? "ios-checkmark-circle" : "ios-close-circle"} />
           </Item>
+
           <Item success={this.state.isPaidValid} error={!this.state.isPaidValid}>
             <Icon active name="calculator" />
             <Label>Tiền Nhận:</Label>
-            <Input value={this.state.paid} onChangeText={(text)=>{
-              this.setState({isPaidValid:text > 0 ? true:false});
+            <Input value={this.state.paid.toString()} onChangeText={(text)=>{
+              this.setState({
+                isPaidValid:text > 0 ? true:false,
+                paid:text
+              });
             }} />
-            <IconNB name="ios-checkmark-circle" />
+            <IconNB name={this.state.isPaidValid ? "ios-checkmark-circle" : "ios-close-circle"} />
           </Item>
 
           <Item success={this.state.isProductTypeValid} error={!this.state.isProductTypeValid}>
@@ -221,7 +253,7 @@ class OrderEdit extends Component {
           </Item>
 
         </Form>
-        <Button block style={{ margin: 15, marginTop: 50 }}>
+        <Button block style={{ margin: 15, marginTop: 50 }} onPress={()=>{alert(this.state.weight);}}>
           <Text>Lưu</Text>
         </Button>
         </Content>
