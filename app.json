@@ -7,6 +7,9 @@
       "hideExponentText": true,
       "backgroundImage": "./assets/splashscreen.png"
     },
+    "ios": {
+      "bundleIdentifier": "com.tns.simplestorekit"
+    },
     "orientation": "portrait",
     "primaryColor": "#cccccc",
     "packagerOpts": {
