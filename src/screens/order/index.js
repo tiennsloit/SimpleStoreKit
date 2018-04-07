@@ -83,6 +83,7 @@ class OrderEdit extends Component {
     super(props);
     this.state =
     {
+      orderJson:undefined,
       isLoading: true,
       productTypeId: 1,
       productPrice:"0",
@@ -106,23 +107,24 @@ class OrderEdit extends Component {
   componentDidMount(){
     console.log('component did mount!!');
     var orderId = this.props.navigation.state.params.orderId;
-    fetch('https://simplestorekitws.azurewebsites.net/getorderbyid/' + orderId)
+    fetch('https://simplestorekitws.azurewebsites.net/api/order/' + orderId)
       .then((response) => response.json())
       .then((responseJson) => {
         this.setState({
+          orderJson:responseJson,
           isLoading: false,
           weight:responseJson.weight,
-          productTypeId: responseJson.productType.id,
+          productTypeId: responseJson.productTypeId,
           price:responseJson.price,
           paid:responseJson.paid,
           contactName: responseJson.contact.name,
-          isReceived: responseJson.receivedreceived > 0,
+          isReceived: responseJson.received > 0,
 
 
           isWeightValid: responseJson.weight > 0,
-          isPriceValid: responseJson.productType.price > 0,
-          isPaidValid: responseJson.productType.paid > 0,
-          isProductTypeValid:responseJson.productType.id > 0
+          isPriceValid: responseJson.price > 0,
+          isPaidValid: responseJson.paid > 0,
+          isProductTypeValid:responseJson.productTypeId > 0
 
 
         }, function(){
@@ -142,7 +144,7 @@ class OrderEdit extends Component {
         });
       })
       .catch((error)=>{
-        console.console.error(error);
+        console.error(error);
       });
 
 
@@ -154,7 +156,23 @@ class OrderEdit extends Component {
   }
 
   save = ()=>{
-
+    var updatedOrderJson = this.state.orderJson;
+    updatedOrderJson.weight = this.state.weight;
+    updatedOrderJson.productTypeId = this.state.productTypeId;
+    updatedOrderJson.price = this.state.price;
+    updatedOrderJson.paid = this.state.paid;
+    updatedOrderJson.received = this.state.isReceived ? 1 : 0;
+    fetch('https://simplestorekitws.azurewebsites.net/api/order', {
+      method: 'PUT',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(updatedOrderJson),
+    })
+    .catch((error)=>{
+      console.error(error);
+    });
   }
 
   render() {
@@ -273,7 +291,7 @@ class OrderEdit extends Component {
           </Item>
 
         </Form>
-        <Button block style={{ margin: 15, marginTop: 50 }} onPress={()=>{alert(this.state.weight);}}>
+        <Button block style={{ margin: 15, marginTop: 50, backgroundColor: '#0ca079'}} onPress={()=>{this.save();}}>
           <Text>Lưu</Text>
         </Button>
         </Content>
