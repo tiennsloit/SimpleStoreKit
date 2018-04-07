@@ -150,8 +150,11 @@ class OrderEdit extends Component {
 
   weightChanged = ()=>{
 
-
     console.log('weight: '+ this.state.weight + ' valid: ' +this.state.isWeightValid);
+  }
+
+  save = ()=>{
+
   }
 
   render() {
@@ -253,16 +256,18 @@ class OrderEdit extends Component {
 
           </Picker>
           </Item>
+
           <Item success={this.state.isReceived} error={!(this.state.isReceived)}>
-            <Icon active name="cart" />
+            <Icon active name="cart" style={{margin:0}}/>
             <Label>Đã giao hàng:</Label>
-            <CheckBox
+            <CheckBox style={{margin:10 }}
               color={this.state.isReceived? "green" : "red"}
               checked={this.state.isReceived}
               onPress={() => {
                 this.setState({isReceived:!this.state.isReceived});
               }
             }
+
             />
 
           </Item>
