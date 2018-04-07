@@ -92,6 +92,7 @@ class OrderEdit extends Component {
       totalPrice:"0",
       contactName:'',
       productTypeId:undefined,
+      productTypes:[],
 
 
       isWeightValid: true,
@@ -105,7 +106,7 @@ class OrderEdit extends Component {
   componentDidMount(){
     console.log('component did mount!!');
     var orderId = this.props.navigation.state.params.orderId;
-    return fetch('https://simplestorekitws.azurewebsites.net/getorderbyid/' + orderId)
+    fetch('https://simplestorekitws.azurewebsites.net/getorderbyid/' + orderId)
       .then((response) => response.json())
       .then((responseJson) => {
         this.setState({
@@ -116,6 +117,7 @@ class OrderEdit extends Component {
           paid:responseJson.paid,
           contactName: responseJson.contact.name,
           isReceived: responseJson.receivedreceived > 0,
+
 
           isWeightValid: responseJson.weight > 0,
           isPriceValid: responseJson.productType.price > 0,
@@ -132,6 +134,18 @@ class OrderEdit extends Component {
         console.error(error);
       });
 
+      fetch('https://simplestorekitws.azurewebsites.net/api/producttypes')
+      .then((response)=> response.json())
+      .then((responseJson)=>{
+        this.setState({
+          productTypes:responseJson
+        });
+      })
+      .catch((error)=>{
+        console.console.error(error);
+      });
+
+
   }
 
   weightChanged = ()=>{
@@ -141,6 +155,10 @@ class OrderEdit extends Component {
   }
 
   render() {
+    let productTypeItems = this.state.productTypes.map( (s, i) => {
+            console.log('product type item: ' + s.id);
+            return <Picker.Item key={s.id} value={s.id} label={s.name} />
+        });
     return (
       <Container style={styles.container}>
         <Header>
@@ -231,11 +249,8 @@ class OrderEdit extends Component {
               this.setState({productTypeId:value});
             }}
           >
-            <Item label="Wallet" value="1" />
-            <Item label="ATM Card" value="2" />
-            <Item label="Debit Card" value="3" />
-            <Item label="Credit Card" value="4" />
-            <Item label="Net Banking" value="5" />
+            {productTypeItems}
+
           </Picker>
           </Item>
           <Item success={this.state.isReceived} error={!(this.state.isReceived)}>
