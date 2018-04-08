@@ -162,6 +162,7 @@ class OrderEdit extends Component {
     updatedOrderJson.price = this.state.price;
     updatedOrderJson.paid = this.state.paid;
     updatedOrderJson.received = this.state.isReceived ? 1 : 0;
+    updatedOrderJson.contact.name = this.state.contactName;
     fetch('https://simplestorekitws.azurewebsites.net/api/order', {
       method: 'PUT',
       headers: {
@@ -201,7 +202,11 @@ class OrderEdit extends Component {
         <Form>
           <Item stackedLabel>
             <Label>Tên khách hàng</Label>
-            <Input value={this.state.contactName}/>
+            <Input value={this.state.contactName} onChangeText={(text)=>{
+              this.setState({
+                contactName:text
+              })
+            }}/>
           </Item>
           <Item success={this.state.isWeightValid} error={!this.state.isWeightValid}>
             <Icon active name="logo-dropbox" />
