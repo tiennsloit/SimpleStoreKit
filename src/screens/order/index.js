@@ -84,9 +84,11 @@ class OrderEdit extends Component {
     super(props);
     this.state =
     {
+
       orderJson:undefined,
       isLoading: true,
       isSaving:false,
+      orderId:undefined,
       productTypeId: 1,
       productPrice:"0",
       price:"0",
@@ -109,11 +111,18 @@ class OrderEdit extends Component {
   componentDidMount(){
     console.log('component did mount!!');
     var orderId = this.props.navigation.state.params.orderId;
-    fetch('https://simplestorekitws.azurewebsites.net/api/order/' + orderId)
+    var url = 'https://simplestorekitws.azurewebsites.net/api/orderbydefault/1';
+    if(orderId > 0)
+    {
+      url = 'https://simplestorekitws.azurewebsites.net/api/order/' + orderId;
+    }
+
+    fetch(url)
       .then((response) => response.json())
       .then((responseJson) => {
         this.setState({
           orderJson:responseJson,
+          orderId:responseJson.id,
           isLoading: false,
           weight:responseJson.weight,
           productTypeId: responseJson.productTypeId,
@@ -169,7 +178,7 @@ class OrderEdit extends Component {
     updatedOrderJson.received = this.state.isReceived ? 1 : 0;
     updatedOrderJson.contact.name = this.state.contactName;
     fetch('https://simplestorekitws.azurewebsites.net/api/order', {
-      method: 'PUT',
+      method: this.state.orderId > 0 ? 'PUT' : 'POST',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
@@ -324,7 +333,7 @@ class OrderEdit extends Component {
           </Button>
         </Left>
           <Body>
-            <Title>Sửa đơn hàng</Title>
+            <Title>{this.props.navigation.state.params.orderId > 0 ? 'Sửa đơn hàng' : 'Tạo đơn hàng'}</Title>
           </Body>
           <Right />
         </Header>

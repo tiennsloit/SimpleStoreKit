@@ -14,7 +14,8 @@ import {
   Left,
   Right,
   Switch,
-  Body
+  Body,
+  Spinner
 } from "native-base";
 import styles from "./styles";
 
@@ -58,6 +59,67 @@ class Orders extends Component {
     this.setState({ listViewData: newData });
   }
   render() {
+
+    var contentData =
+    <Content>
+      <List
+        dataSource={this.ds.cloneWithRows(this.state.listViewData)}
+        renderRow={data =>
+
+          <ListItem icon style={{ paddingLeft: 20 }}>
+          <Left>
+            <Button style={{ backgroundColor: (data.paid > 0 ? "green" : "red") }}>
+              <Icon active name="logo-usd" />
+            </Button>
+          </Left>
+          <Body>
+            <Text>
+              {data.productType.name}
+            </Text>
+          </Body>
+          <Right>
+          {Platform.OS === "ios" && <Icon active name="car" style={{fontSize: 30, color: (data.received > 0 ? 'green' : 'red')}}/>}
+          {Platform.OS === "android" && <Icon active name="car" style={{fontSize: 30, color: 'red'}}/>}
+          </Right>
+          </ListItem>}
+        renderLeftHiddenRow={data =>
+          <Button
+            full
+            onPress={() => this.props.navigation.navigate('OrderEdit', { orderId:data.id })}
+            style={{
+              backgroundColor: "#CCC",
+              flex: 1,
+              alignItems: "center",
+              justifyContent: "center"
+            }}
+          >
+            <Icon active name="create" style={{color:'green'}} />
+          </Button>}
+        renderRightHiddenRow={(data, secId, rowId, rowMap) =>
+          <Button
+            full
+            danger
+            onPress={_ => this.deleteRow(secId, rowId, rowMap)}
+            style={{
+              backgroundColor: "#CCC",
+              flex: 1,
+              alignItems: "center",
+              justifyContent: "center"
+            }}
+          >
+            <Icon active name="trash"  style={{color:'red'}}/>
+          </Button>}
+        leftOpenValue={75}
+        rightOpenValue={-75}
+      />
+    </Content>
+
+    var spinner = <Content>
+      <Spinner color="green" />
+    </Content>;
+
+    var content = this.state.isLoading? spinner: contentData;
+
     return (
       <Container style={styles.container}>
         <Header>
@@ -69,60 +131,15 @@ class Orders extends Component {
           <Body style={{ flex: 3 }}>
             <Title>Đơn hàng mới nhất</Title>
           </Body>
-          <Right />
+          <Right>
+          <Button transparent onPress={() => this.props.navigation.navigate('OrderEdit', { orderId:0 })}>
+            <Icon name="add" />
+          </Button>
+          </Right>
         </Header>
 
-        <Content>
-          <List
-            dataSource={this.ds.cloneWithRows(this.state.listViewData)}
-            renderRow={data =>
+        {content}
 
-              <ListItem icon style={{ paddingLeft: 20 }}>
-              <Left>
-                <Button style={{ backgroundColor: "red" }}>
-                  <Icon active name="logo-usd" />
-                </Button>
-              </Left>
-              <Body>
-                <Text>
-                  {data.productType.name}
-                </Text>
-              </Body>
-              <Right>
-              {Platform.OS === "ios" && <Icon active name="car" style={{fontSize: 30, color: 'red'}}/>}
-              {Platform.OS === "android" && <Icon active name="car" style={{fontSize: 30, color: 'red'}}/>}
-              </Right>
-              </ListItem>}
-            renderLeftHiddenRow={data =>
-              <Button
-                full
-                onPress={() => this.props.navigation.navigate('OrderEdit', { orderId:data.id })}
-                style={{
-                  backgroundColor: "#CCC",
-                  flex: 1,
-                  alignItems: "center",
-                  justifyContent: "center"
-                }}
-              >
-                <Icon active name="information-circle" />
-              </Button>}
-            renderRightHiddenRow={(data, secId, rowId, rowMap) =>
-              <Button
-                full
-                danger
-                onPress={_ => this.deleteRow(secId, rowId, rowMap)}
-                style={{
-                  flex: 1,
-                  alignItems: "center",
-                  justifyContent: "center"
-                }}
-              >
-                <Icon active name="trash" />
-              </Button>}
-            leftOpenValue={75}
-            rightOpenValue={-75}
-          />
-        </Content>
       </Container>
     );
   }
