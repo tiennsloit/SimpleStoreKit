@@ -19,7 +19,8 @@ import {
   IconNB,
   Picker,
   CheckBox,
-  NumericInput
+  NumericInput,
+  Spinner
 } from "native-base";
 import styles from "./styles";
 
@@ -85,6 +86,7 @@ class OrderEdit extends Component {
     {
       orderJson:undefined,
       isLoading: true,
+      isSaving:false,
       productTypeId: 1,
       productPrice:"0",
       price:"0",
@@ -156,6 +158,9 @@ class OrderEdit extends Component {
   }
 
   save = ()=>{
+    this.setState({
+      isSaving:true
+    })
     var updatedOrderJson = this.state.orderJson;
     updatedOrderJson.weight = this.state.weight;
     updatedOrderJson.productTypeId = this.state.productTypeId;
@@ -171,9 +176,20 @@ class OrderEdit extends Component {
       },
       body: JSON.stringify(updatedOrderJson),
     })
+    .then((json)=>{
+      console.log('Success ' + json);
+      this.setState({
+        isSaving:false
+      })
+      this.props.navigation.navigate("Orders");
+
+    })
     .catch((error)=>{
       console.error(error);
     });
+
+    console.log('Navigate to Orders');
+
   }
 
   render() {
@@ -181,125 +197,140 @@ class OrderEdit extends Component {
             console.log('product type item: ' + s.id);
             return <Picker.Item key={s.id} value={s.id} label={s.name} />
         });
+
+    var contentData =
+    <Content>
+    <Form>
+      <Item stackedLabel>
+        <Label>Tên khách hàng</Label>
+        <Input value={this.state.contactName} onChangeText={(text)=>{
+          this.setState({
+            contactName:text
+          })
+        }}/>
+      </Item>
+      <Item success={this.state.isWeightValid} error={!this.state.isWeightValid}>
+        <Icon active name="logo-dropbox" />
+        <Label>Số lượng</Label>
+        <Input value={this.state.weight.toString()} onChangeText={(text)=>
+          {
+            this.setState({
+              isWeightValid:text > 0 ? true : false,
+              weight:text,
+              paid:text*this.state.price,
+              isPaidValid:this.state.paid>0
+            });
+
+
+          }} keyboardType = 'numeric' />
+        <IconNB name={this.state.isWeightValid ? "ios-checkmark-circle" : "ios-close-circle"} />
+      </Item>
+
+      <Item success={this.state.isPriceValid} error={!this.state.isPriceValid}>
+        <Icon active name="logo-usd" />
+        <Label>Đơn Giá:</Label>
+        <Input value={this.state.price.toString()} onChangeText={(text)=>{
+          this.setState({
+            isPriceValid:text > 0 ? true:false,
+            price:text,
+            paid:text*this.state.weight,
+            isPaidValid:this.state.paid>0
+          });
+
+        }} />
+        <IconNB name={this.state.isPriceValid ? "ios-checkmark-circle" : "ios-close-circle"} />
+      </Item>
+
+      <Item success={this.state.isPriceValid} error={!this.state.isPriceValid}>
+        <Icon active name="logo-usd" />
+        <Label>Giá:</Label>
+        <Input disabled value={(this.state.price*this.state.weight).toString()} onChangeText={(text)=>{
+          this.setState({isPriceValid:text > 0 ? true:false});
+        }} />
+        <IconNB name={this.state.isPriceValid ? "ios-checkmark-circle" : "ios-close-circle"} />
+      </Item>
+
+      <Item success={this.state.isPaidValid} error={!this.state.isPaidValid}>
+        <Icon active name="calculator" />
+        <Label>Tiền Nhận:</Label>
+        <Input value={this.state.paid.toString()} onChangeText={(text)=>{
+          this.setState({
+            isPaidValid:text > 0 ? true:false,
+            paid:text
+          });
+        }} />
+        <IconNB name={this.state.isPaidValid ? "ios-checkmark-circle" : "ios-close-circle"} />
+      </Item>
+
+      <Item success={this.state.isProductTypeValid} error={!this.state.isProductTypeValid}>
+      <Icon active name="archive" />
+      <Label>Loại hàng hoá:</Label>
+      <Picker
+        mode="dropdown"
+        iosIcon={<Icon name="ios-arrow-down-outline" />}
+        style={{ width: undefined }}
+        placeholder="Chọn mặt hàng"
+        placeholderStyle={{ color: "#bfc6ea" }}
+        selectedValue={this.state.productTypeId}
+        onValueChange={(value)=>{
+          this.setState({productTypeId:value});
+        }}
+      >
+        {productTypeItems}
+
+      </Picker>
+      </Item>
+
+      <Item success={this.state.isReceived} error={!(this.state.isReceived)}>
+        <Icon active name="cart" style={{margin:0}}/>
+        <Label>Đã giao hàng:</Label>
+        <CheckBox style={{margin:10 }}
+          color={this.state.isReceived? "green" : "red"}
+          checked={this.state.isReceived}
+          onPress={() => {
+            this.setState({isReceived:!this.state.isReceived});
+          }
+        }
+
+        />
+
+      </Item>
+
+    </Form>
+    <Button disabled={this.state.isSaving} block style={{ margin: 15, marginTop: 50, backgroundColor: (this.state.isSaving ? 'grey' : '#0ca079')}} onPress={()=>{this.save();}}>
+      <Text>Lưu</Text>
+    </Button>
+    </Content>
+
+    var spin = <Content>
+      <Spinner color="green" />
+    </Content>
+
+    if(this.state.isLoading)
+    {
+        content = spin;
+    }
+    else
+    {
+        content = contentData;
+    }
+
     return (
       <Container style={styles.container}>
         <Header>
-          <Left>
-            <Button
-              transparent
-              onPress={() => this.props.navigation.navigate("DrawerOpen")}
-            >
-              <Icon name="menu" />
-            </Button>
-          </Left>
+        <Left>
+          <Button transparent onPress={() => this.props.navigation.navigate("Orders")}>
+            <Icon name="arrow-back" />
+          </Button>
+        </Left>
           <Body>
             <Title>Sửa đơn hàng</Title>
           </Body>
           <Right />
         </Header>
 
-        <Content>
-        <Form>
-          <Item stackedLabel>
-            <Label>Tên khách hàng</Label>
-            <Input value={this.state.contactName} onChangeText={(text)=>{
-              this.setState({
-                contactName:text
-              })
-            }}/>
-          </Item>
-          <Item success={this.state.isWeightValid} error={!this.state.isWeightValid}>
-            <Icon active name="logo-dropbox" />
-            <Label>Số lượng</Label>
-            <Input value={this.state.weight.toString()} onChangeText={(text)=>
-              {
-                this.setState({
-                  isWeightValid:text > 0 ? true : false,
-                  weight:text,
-                  paid:text*this.state.price,
-                  isPaidValid:this.state.paid>0
-                });
+        {content}
 
-
-              }} keyboardType = 'numeric' />
-            <IconNB name={this.state.isWeightValid ? "ios-checkmark-circle" : "ios-close-circle"} />
-          </Item>
-
-          <Item success={this.state.isPriceValid} error={!this.state.isPriceValid}>
-            <Icon active name="logo-usd" />
-            <Label>Đơn Giá:</Label>
-            <Input value={this.state.price.toString()} onChangeText={(text)=>{
-              this.setState({
-                isPriceValid:text > 0 ? true:false,
-                price:text,
-                paid:text*this.state.weight,
-                isPaidValid:this.state.paid>0
-              });
-
-            }} />
-            <IconNB name={this.state.isPriceValid ? "ios-checkmark-circle" : "ios-close-circle"} />
-          </Item>
-
-          <Item success={this.state.isPriceValid} error={!this.state.isPriceValid}>
-            <Icon active name="logo-usd" />
-            <Label>Giá:</Label>
-            <Input disabled value={(this.state.price*this.state.weight).toString()} onChangeText={(text)=>{
-              this.setState({isPriceValid:text > 0 ? true:false});
-            }} />
-            <IconNB name={this.state.isPriceValid ? "ios-checkmark-circle" : "ios-close-circle"} />
-          </Item>
-
-          <Item success={this.state.isPaidValid} error={!this.state.isPaidValid}>
-            <Icon active name="calculator" />
-            <Label>Tiền Nhận:</Label>
-            <Input value={this.state.paid.toString()} onChangeText={(text)=>{
-              this.setState({
-                isPaidValid:text > 0 ? true:false,
-                paid:text
-              });
-            }} />
-            <IconNB name={this.state.isPaidValid ? "ios-checkmark-circle" : "ios-close-circle"} />
-          </Item>
-
-          <Item success={this.state.isProductTypeValid} error={!this.state.isProductTypeValid}>
-          <Icon active name="archive" />
-          <Label>Loại hàng hoá:</Label>
-          <Picker
-            mode="dropdown"
-            iosIcon={<Icon name="ios-arrow-down-outline" />}
-            style={{ width: undefined }}
-            placeholder="Chọn mặt hàng"
-            placeholderStyle={{ color: "#bfc6ea" }}
-            selectedValue={this.state.productTypeId}
-            onValueChange={(value)=>{
-              this.setState({productTypeId:value});
-            }}
-          >
-            {productTypeItems}
-
-          </Picker>
-          </Item>
-
-          <Item success={this.state.isReceived} error={!(this.state.isReceived)}>
-            <Icon active name="cart" style={{margin:0}}/>
-            <Label>Đã giao hàng:</Label>
-            <CheckBox style={{margin:10 }}
-              color={this.state.isReceived? "green" : "red"}
-              checked={this.state.isReceived}
-              onPress={() => {
-                this.setState({isReceived:!this.state.isReceived});
-              }
-            }
-
-            />
-
-          </Item>
-
-        </Form>
-        <Button block style={{ margin: 15, marginTop: 50, backgroundColor: '#0ca079'}} onPress={()=>{this.save();}}>
-          <Text>Lưu</Text>
-        </Button>
-        </Content>
       </Container>
     );
   }
