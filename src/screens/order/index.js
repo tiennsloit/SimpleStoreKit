@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import { BarCodeScanner, Permissions } from 'expo';
+
 import {
   Container,
   Header,
@@ -20,7 +22,8 @@ import {
   Picker,
   CheckBox,
   NumericInput,
-  Spinner
+  Spinner,
+  Alert
 } from "native-base";
 import styles from "./styles";
 
@@ -84,7 +87,8 @@ class OrderEdit extends Component {
     super(props);
     this.state =
     {
-
+      hasCameraPermission:null,
+      scannedData:null,
       orderJson:undefined,
       isLoading: true,
       isSaving:false,
@@ -106,12 +110,28 @@ class OrderEdit extends Component {
       isProductTypeValid:true,
       isReceived: true
     }
-  }
+  };
+
+  _requestCameraPermission =  async () => {
+    const { status } = await Permissions.askAsync(Permissions.CAMERA);
+    this.setState({
+      hasCameraPermission: status === 'granted',
+    });
+  };
+
+  _handleBarCodeRead = data => {
+
+    this.setState({
+      scannedData:data
+    });
+  };
 
   componentDidMount(){
-    console.log('component did mount!!');
+    console.log('component did mount!!!!!');
     var orderId = this.props.navigation.state.params.orderId;
+    this._requestCameraPermission();
     var url = 'https://simplestorekitws.azurewebsites.net/api/orderbydefault/1';
+
     if(orderId > 0)
     {
       url = 'https://simplestorekitws.azurewebsites.net/api/order/' + orderId;
@@ -206,6 +226,16 @@ class OrderEdit extends Component {
             console.log('product type item: ' + s.id);
             return <Picker.Item key={s.id} value={s.id} label={s.name} />
         });
+
+    var barCodeView =  this.state.hasCameraPermission === null ?
+              <Text>Requesting for camera permission</Text> :
+              this.state.hasCameraPermission === false ?
+                <Text>Camera permission is not granted</Text> :
+                <BarCodeScanner
+                  onBarCodeRead={this._handleBarCodeRead}
+                  style={{ height: 200, width: 200 }}
+                />
+
 
     var contentData =
     <Content>
@@ -315,14 +345,20 @@ class OrderEdit extends Component {
       <Spinner color="green" />
     </Content>
 
-    if(this.state.isLoading)
-    {
-        content = spin;
-    }
-    else
-    {
-        content = contentData;
-    }
+if(this.state.scannedData != null){
+  if(this.state.isLoading)
+  {
+      content = spin;
+  }
+  else
+  {
+      content = contentData;
+  }
+}
+else{
+  content = barCodeView;
+}
+
 
     return (
       <Container style={styles.container}>
