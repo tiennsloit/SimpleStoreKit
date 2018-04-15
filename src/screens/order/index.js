@@ -88,6 +88,7 @@ class OrderEdit extends Component {
     this.state =
     {
       hasCameraPermission:null,
+      useBarCode:false,
       scannedData:null,
       orderJson:undefined,
       isLoading: true,
@@ -129,14 +130,23 @@ class OrderEdit extends Component {
   componentDidMount(){
     console.log('component did mount!!!!!');
     var orderId = this.props.navigation.state.params.orderId;
-    this._requestCameraPermission();
-    var url = 'https://simplestorekitws.azurewebsites.net/api/orderbydefault/1';
+    if(this.state.useBarCode)
+    {
+      this._requestCameraPermission();
+    }
+
+    var url = 'https://simplestorekitws.azurewebsites.net/api/order/user/1';
 
     if(orderId > 0)
     {
       url = 'https://simplestorekitws.azurewebsites.net/api/order/' + orderId;
     }
 
+    if(this.state.scannedData != null)
+    {
+      scannedProductTypeId = this.state.scannedData;
+      url = 'https://simplestorekitws.azurewebsites.net/api/order/user/1/productType/2';
+    }
     fetch(url)
       .then((response) => response.json())
       .then((responseJson) => {
@@ -345,7 +355,12 @@ class OrderEdit extends Component {
       <Spinner color="green" />
     </Content>
 
-if(this.state.scannedData != null){
+if(this.state.useBarCode && this.state.scannedData == null)
+{
+    content = barCodeView;
+}
+else {
+
   if(this.state.isLoading)
   {
       content = spin;
@@ -354,11 +369,7 @@ if(this.state.scannedData != null){
   {
       content = contentData;
   }
-}
-else{
-  content = barCodeView;
-}
-
+};
 
     return (
       <Container style={styles.container}>
