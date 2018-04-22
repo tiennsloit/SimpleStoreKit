@@ -1,4 +1,5 @@
-import React, { Component } from "react";
+import React, { Component} from "react";
+import {Alert} from "react-native";
 import { BarCodeScanner, Permissions } from 'expo';
 
 import {
@@ -22,9 +23,10 @@ import {
   Picker,
   CheckBox,
   NumericInput,
-  Spinner,
-  Alert
+  Spinner
+
 } from "native-base";
+
 import styles from "./styles";
 
 const datas = [
@@ -88,7 +90,7 @@ class OrderEdit extends Component {
     this.state =
     {
       hasCameraPermission:null,
-      useBarCode:false,
+      useBarCode:true,
       scannedData:null,
       orderJson:undefined,
       isLoading: true,
@@ -120,15 +122,21 @@ class OrderEdit extends Component {
     });
   };
 
-  _handleBarCodeRead = data => {
+  _handleBarCodeRead = (data) => {
 
-    this.setState({
-      scannedData:data
-    });
+    if(data != null)
+    {
+      var barc = data.data;
+      var realcode = barc.substring(0,barc.length-1);
+      this.setState({
+        scannedData:realcode
+      });
+      //Alert.alert(this.state.scannedData);
+      this.LoadOrder(realcode);
+    }
   };
 
-  componentDidMount(){
-    console.log('component did mount!!!!!');
+  LoadOrder =(barcode)=>{
     var orderId = this.props.navigation.state.params.orderId;
     if(this.state.useBarCode)
     {
@@ -142,10 +150,12 @@ class OrderEdit extends Component {
       url = 'https://simplestorekitws.azurewebsites.net/api/order/' + orderId;
     }
 
-    if(this.state.scannedData != null)
+    //Alert.alert('use bar code:' + this.state.useBarCode + ' - scannedData: ' +  this.state.scannedData);
+    if(barcode != null)
     {
-      scannedProductTypeId = this.state.scannedData;
-      url = 'https://simplestorekitws.azurewebsites.net/api/order/user/1/productType/2';
+
+      url = 'https://simplestorekitws.azurewebsites.net/api/order/user/1/productType/' + barcode;
+      //Alert.alert('url1:' + url);
     }
     fetch(url)
       .then((response) => response.json())
@@ -188,7 +198,10 @@ class OrderEdit extends Component {
         console.error(error);
       });
 
+  }
 
+  componentDidMount(){
+      this.LoadOrder(null);
   }
 
   weightChanged = ()=>{
