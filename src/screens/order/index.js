@@ -138,7 +138,7 @@ class OrderEdit extends Component {
 
   LoadOrder =(barcode)=>{
     var orderId = this.props.navigation.state.params.orderId;
-    if(this.state.useBarCode)
+    if(orderId <= 0 && this.state.useBarCode)
     {
       this._requestCameraPermission();
     }
@@ -368,7 +368,7 @@ class OrderEdit extends Component {
       <Spinner color="green" />
     </Content>
 
-if(this.state.useBarCode && this.state.scannedData == null)
+if(this.state.useBarCode && this.state.orderId <=0 && this.state.scannedData == null)
 {
     content = barCodeView;
 }
