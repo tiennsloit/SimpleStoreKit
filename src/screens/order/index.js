@@ -1,6 +1,7 @@
 import React, { Component} from "react";
-import {Alert} from "react-native";
+import {Alert,ScrollView, Dimensions} from "react-native";
 import { BarCodeScanner, Permissions } from 'expo';
+import { Col, Row, Grid } from 'react-native-easy-grid';
 
 import {
   Container,
@@ -245,6 +246,7 @@ class OrderEdit extends Component {
   }
 
   render() {
+    const { height, width } = Dimensions.get('window');
     let productTypeItems = this.state.productTypes.map( (s, i) => {
             console.log('product type item: ' + s.id);
             return <Picker.Item key={s.id} value={s.id} label={s.name} />
@@ -256,8 +258,16 @@ class OrderEdit extends Component {
                 <Text>Camera permission is not granted</Text> :
                 <BarCodeScanner
                   onBarCodeRead={this._handleBarCodeRead}
-                  style={{ height: 200, width: 200 }}
+                      style={{height:height,width:width}}
                 />
+    var barCodeViewContent =
+
+    <ScrollView>
+      <Row style={{backgroundColor:'red'}}>
+        {barCodeView}
+      </Row>
+    </ScrollView>
+
 
 
     var contentData =
@@ -370,7 +380,7 @@ class OrderEdit extends Component {
 
 if(this.state.useBarCode && this.state.orderId <=0 && this.state.scannedData == null)
 {
-    content = barCodeView;
+    content = barCodeViewContent;
 }
 else {
 
