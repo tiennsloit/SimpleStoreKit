@@ -128,12 +128,12 @@ class OrderEdit extends Component {
     if(data != null)
     {
       var barc = data.data;
-      var realcode = barc.substring(0,barc.length-1);
+      //var realcode = barc.substring(0,barc.length-1);
       this.setState({
-        scannedData:realcode
+        scannedData:barc
       });
-      //Alert.alert(this.state.scannedData);
-      this.LoadOrder(realcode);
+      //Alert.alert('data: ' + data.data);
+      this.LoadOrder(barc);
     }
   };
 
