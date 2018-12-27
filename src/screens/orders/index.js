@@ -68,7 +68,7 @@ class Orders extends Component {
 
           <ListItem icon style={{ paddingLeft: 20 }}>
           <Left>
-            <Button style={{ backgroundColor: (data.paid > 0 ? "green" : "red") }}>
+            <Button style={{ backgroundColor: (data.paid > 0 ? "#f7931e" : "red") }}>
               <Icon active name="logo-usd" />
             </Button>
           </Left>
@@ -78,8 +78,8 @@ class Orders extends Component {
             </Text>
           </Body>
           <Right>
-          {Platform.OS === "ios" && <Icon active name="car" style={{fontSize: 30, color: (data.received > 0 ? 'green' : 'red')}}/>}
-          {Platform.OS === "android" && <Icon active name="car" style={{fontSize: 30, color: (data.received > 0 ? 'green' : 'red')}}/>}
+          {Platform.OS === "ios" && <Icon active name="car" style={{fontSize: 30, color: (data.received > 0 ? "#f7931e" : 'red')}}/>}
+          {Platform.OS === "android" && <Icon active name="car" style={{fontSize: 30, color: (data.received > 0 ? "#f7931e" : 'red')}}/>}
           </Right>
           </ListItem>}
         renderLeftHiddenRow={data =>
@@ -93,7 +93,7 @@ class Orders extends Component {
               justifyContent: "center"
             }}
           >
-            <Icon active name="create" style={{color:'green'}} />
+            <Icon active name="create" style={{color:"#f7931e"}} />
           </Button>}
         renderRightHiddenRow={(data, secId, rowId, rowMap) =>
           <Button
@@ -115,7 +115,7 @@ class Orders extends Component {
     </Content>
 
     var spinner = <Content>
-      <Spinner color="green" />
+      <Spinner color="#f7931e" />
     </Content>;
 
     var content = this.state.isLoading? spinner: contentData;
