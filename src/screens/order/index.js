@@ -369,7 +369,7 @@ class OrderEdit extends Component {
       </Item>
 
     </Form>
-    <Button disabled={this.state.isSaving} block style={{ margin: 15, marginTop: 50, backgroundColor: (this.state.isSaving ? 'grey' : '#0ca079')}} onPress={()=>{this.save();}}>
+    <Button disabled={this.state.isSaving} block style={{ margin: 15, marginTop: 50, backgroundColor: (this.state.isSaving ? 'grey' : '#e3b21b')}} onPress={()=>{this.save();}}>
       <Text>Lưu</Text>
     </Button>
     </Content>
