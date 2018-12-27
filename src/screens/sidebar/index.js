@@ -14,7 +14,7 @@ import {
 import styles from "./style";
 
 const drawerCover = require("../../../assets/drawer-cover.png");
-const drawerImage = require("../../../assets/logo-kitchen-sink.png");
+const drawerImage = require("../../../assets/logo-simple-ordering-white.png");
 const datas = [
   {
     name: "Danh sách đơn hàng",
