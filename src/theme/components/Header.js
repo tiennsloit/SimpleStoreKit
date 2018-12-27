@@ -300,7 +300,7 @@ export default (variables = variable) => {
       flexDirection: "row",
       justifyContent: "flex-end"
     },
-    backgroundColor: variables.toolbarDefaultBg,
+    backgroundColor: "#370e63",
     flexDirection: "row",
     paddingHorizontal: 10,
     justifyContent: "center",
