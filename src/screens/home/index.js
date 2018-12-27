@@ -30,16 +30,16 @@ class Home extends Component {
           </View>
           <View style={{ marginBottom: 80, flexDirection:"row", alignSelf:"center" }}>
             <Button
-              style={{ backgroundColor: "#6FAF98", margin:5}}
+              style={{ backgroundColor: "#e3b21b", margin:5}}
               onPress={() => this.props.navigation.navigate("DrawerOpen")}
             >
-              <Text>Danh mục</Text>
+              <Text style={{ color: "#ffffff"}}>Danh mục</Text>
             </Button>
 
-            <Button style={{ backgroundColor: "#6FAF98", margin:5 }}
+            <Button style={{ backgroundColor: "#e3b21b", margin:5 }}
               onPress={()=> this.props.navigation.navigate("OrderEdit", {orderId:0})}
             >
-                <Text>Thêm đơn hàng</Text>
+                <Text style={{ color: "#ffffff"}}>Thêm đơn hàng</Text>
             </Button>
           </View>
 
