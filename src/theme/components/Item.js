@@ -146,26 +146,26 @@ export default (variables = variable) => {
 
 		'.success': {
 			'NativeBase.Icon': {
-				color: variables.inputSuccessBorderColor,
+				color: "#370e63",
 			},
 			'NativeBase.IconNB': {
-				color: variables.inputSuccessBorderColor,
+				color: "#370e63",
 			},
 			'.rounded': {
 				borderRadius: 30,
-				borderColor: variables.inputSuccessBorderColor,
+				borderColor: "#370e63",
 			},
 			'.regular': {
-				borderColor: variables.inputSuccessBorderColor,
+				borderColor: "#370e63",
 			},
 			'.underline': {
 				borderWidth: variables.borderWidth * 2,
 				borderTopWidth: 0,
 				borderRightWidth: 0,
 				borderLeftWidth: 0,
-				borderColor: variables.inputSuccessBorderColor,
+				borderColor: "#370e63",
 			},
-			borderColor: variables.inputSuccessBorderColor,
+			borderColor: "#370e63",
 		},
 
 		'.error': {

@@ -357,7 +357,7 @@ class OrderEdit extends Component {
         <Icon active name="cart" style={{margin:0}}/>
         <Label>Đã giao hàng:</Label>
         <CheckBox style={{margin:10 }}
-          color={this.state.isReceived? "green" : "red"}
+          color={this.state.isReceived? "#370e63" : "red"}
           checked={this.state.isReceived}
           onPress={() => {
             this.setState({isReceived:!this.state.isReceived});
@@ -375,7 +375,7 @@ class OrderEdit extends Component {
     </Content>
 
     var spin = <Content>
-      <Spinner color="green" />
+      <Spinner color="#370e63" />
     </Content>
 
 if(this.state.useBarCode && this.state.orderId <=0 && this.state.scannedData == null)
