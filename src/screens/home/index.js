@@ -5,7 +5,7 @@ import { Container, Button, H3, Text } from "native-base";
 import styles from "./styles";
 
 const launchscreenBg = require("../../../assets/launchscreen-bg.png");
-const launchscreenLogo = require("../../../assets/logo-simple-ordering.png");
+const launchscreenLogo = require("../../../assets/logo-simple-ordering-white.png");
 
 class Home extends Component {
   render() {
