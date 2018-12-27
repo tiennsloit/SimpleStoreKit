@@ -79,7 +79,7 @@ class Orders extends Component {
           </Body>
           <Right>
           {Platform.OS === "ios" && <Icon active name="car" style={{fontSize: 30, color: (data.received > 0 ? 'green' : 'red')}}/>}
-          {Platform.OS === "android" && <Icon active name="car" style={{fontSize: 30, color: 'red'}}/>}
+          {Platform.OS === "android" && <Icon active name="car" style={{fontSize: 30, color: (data.received > 0 ? 'green' : 'red')}}/>}
           </Right>
           </ListItem>}
         renderLeftHiddenRow={data =>
