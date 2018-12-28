@@ -5,7 +5,7 @@ import { Container, Button, H3, Text } from "native-base";
 import styles from "./styles";
 
 const launchscreenBg = require("../../../assets/launchscreen-bg.png");
-const launchscreenLogo = require("../../../assets/logo-simple-ordering-white.png");
+const launchscreenLogo = require("../../../assets/logo-simple-ordering-yellow.png");
 
 class Home extends Component {
   render() {
@@ -23,7 +23,7 @@ class Home extends Component {
               backgroundColor: "transparent"
             }}
           >
-            <H3 style={styles.text}>Ứng dụng nhập đơn hàng</H3>
+            <H3 style={styles.text}>Simple Ordering</H3>
             <View style={{ marginTop: 8 }} />
             <H3 style={styles.text}></H3>
             <View style={{ marginTop: 8 }} />
