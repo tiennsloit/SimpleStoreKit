@@ -76,6 +76,9 @@ class Orders extends Component {
             <Text>
               {data.productType.name}
             </Text>
+            <Text numberOfLines={1} note>
+              {data.contact.name}
+            </Text>
           </Body>
           <Right>
           {Platform.OS === "ios" && <Icon active name="car" style={{fontSize: 30, color: (data.received > 0 ? "#f7931e" : 'red')}}/>}
