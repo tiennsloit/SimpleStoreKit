@@ -77,6 +77,7 @@ import AdvancedDeck from "./screens/deckswiper/advanced";
 import Home from "./screens/home/";
 import Orders from "./screens/orders/";
 import OrderEdit from "./screens/order/";
+import CustomerSearch from "./screens/customers/search.js";
 import Anatomy from "./screens/anatomy/";
 import Footer from "./screens/footer/";
 import NHBadge from "./screens/badge/";
@@ -111,6 +112,7 @@ const Drawer = DrawerNavigator(
     Home: { screen: Home },
     Orders:{screen: Orders},
     OrderEdit:{screen:OrderEdit},
+    CustomerSearch:{screen:CustomerSearch},
     Anatomy: { screen: Anatomy },
     Header: { screen: Header },
     Footer: { screen: Footer },
@@ -153,6 +155,7 @@ const AppNavigator = StackNavigator(
     Drawer: { screen: Drawer },
     Orders: { screen: Orders },
     OrderEdit:{screen:OrderEdit},
+    CustomerSearch:{screen:CustomerSearch},
     Header1: { screen: Header1 },
     Header2: { screen: Header2 },
     Header3: { screen: Header3 },
