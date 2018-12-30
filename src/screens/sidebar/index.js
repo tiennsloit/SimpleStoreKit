@@ -17,11 +17,19 @@ const drawerCover = require("../../../assets/drawer-cover.png");
 const drawerImage = require("../../../assets/logo-simple-ordering-yellow.png");
 const datas = [
   {
-    name: "Danh sách đơn hàng",
+    name: "Orders List",
     route: "Orders",
     icon: "phone-portrait",
     bg: "#C5F442"
   },
+  {
+    name: "Customer Search",
+    route: "CustomerSearch",
+    icon: "phone-portrait",
+    bg: "#C5F442"
+  },
+
+
   {
     name: "Anatomy",
     route: "Anatomy",

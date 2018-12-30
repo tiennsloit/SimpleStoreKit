@@ -1,7 +1,7 @@
 {
   "expo": {
     "sdkVersion": "28.0.0",
-    "icon": "http://nativebase.io/assets/img/front-page-icon.png",
+    "icon": "./assets/img/front-page-icon.png",
     "slug": "simplestorekit",
     "loading": {
       "hideExponentText": true,

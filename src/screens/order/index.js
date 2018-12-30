@@ -123,6 +123,8 @@ class OrderEdit extends Component {
     });
   };
 
+
+
   _handleBarCodeRead = (data) => {
 
     if(data != null)
