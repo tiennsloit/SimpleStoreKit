@@ -65,13 +65,17 @@ class CustomerSearch extends Component {
     });
 
     var simpleData = filterData.map(function(item){
-      return {name:item.name, id:item.id, phone:item.phoneNumbers.map(function(phone){
+      var phoneNumbersAll = item.phoneNumbers.map(function(phone){
       if(phone.label == 'mobile')
       return 'mobile: ' + phone.number;
       else {
         return phone.number;
       }
-    })};});
+      });
+
+      var filterPhoneNumbers = phoneNumbersAll.join(", ");
+
+      return {name:item.name, id:item.id, phone:filterPhoneNumbers};});
 
     this.setState({
       listViewData:simpleData,
@@ -95,8 +99,8 @@ class CustomerSearch extends Component {
 
           <ListItem icon style={{ paddingLeft: 20 }}>
           <Left>
-            <Button>
-              <Icon style={{backgroundColor:'red', color:''}} name="person" />
+            <Button style={{backgroundColor:'#370e63'}}>
+              <Icon style={{backgroundColor:'#370e63', color:'white'}} name="person" />
             </Button>
           </Left>
           <Body>
@@ -137,7 +141,7 @@ class CustomerSearch extends Component {
 
     return (
       <Container style={styles.container}>
-        <Header searchBar rounded androidStatusBarColor='#8b4cce'>
+        <Header searchBar rounded androidStatusBarColor='#8b4cce' androidBarStyle="light-content">
           <Item>
             <Icon active name="search" />
             <Input placeholder="Search" />
