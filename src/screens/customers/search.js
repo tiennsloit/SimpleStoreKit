@@ -1,6 +1,9 @@
 import React, { Component } from "react";
 import { ListView } from "react-native";
-import { Contacts, Permissions } from 'expo';
+import { Contacts } from 'expo';
+import { Permissions } from 'expo';
+import { Platform } from 'react-native';
+
 import {
   Container,
   Header,
@@ -12,7 +15,10 @@ import {
   List,
   ListItem,
   Text,
-  Spinner
+  Spinner,
+  Left,
+  Right,
+  Body
 } from "native-base";
 import styles from "./styles";
 
@@ -34,31 +40,44 @@ class CustomerSearch extends Component {
 
   }
 
-  _requestContactPermission =  async () => {
+  LoadContacts = async ()=>
+  {
+
     const { status } = await Permissions.askAsync(Permissions.CONTACTS);
-    this.setState({
-      hasContactPermission: status === 'granted',
-    });
-  };
 
-  LoadContacts = ()=>{
+    if (status !== 'granted') {
+        console.log('permission:' + status);
+        return;
+    }
 
-    this._requestContactPermission();
-
-    if(this.state.hasContactPermission == true)
-    {
-      const { data } = Contacts.getContactsAsync({
-        fields: [Contacts.Fields],
+    const contacts = await Contacts.getContactsAsync({
+        fields: [
+          Contacts.PHONE_NUMBERS,
+          Contacts.EMAILS,
+        ],
+        pageSize: 100,
+        pageOffset: 0,
       });
 
-      if (data.length > 0) {
+    var filterData = contacts.data.filter(function(item)
+    {
+      return item.phoneNumbers.length > 0;
+    });
 
-        this.setState({
-          listViewData: data,
-        });
-
+    var simpleData = filterData.map(function(item){
+      return {name:item.name, id:item.id, phone:item.phoneNumbers.map(function(phone){
+      if(phone.label == 'mobile')
+      return 'mobile: ' + phone.number;
+      else {
+        return phone.number;
       }
-    }
+    })};});
+
+    this.setState({
+      listViewData:simpleData,
+      isLoading:false
+    });
+
   }
 
   componentDidMount(){
@@ -77,26 +96,24 @@ class CustomerSearch extends Component {
           <ListItem icon style={{ paddingLeft: 20 }}>
           <Left>
             <Button>
-              <Icon active name="logo-usd" />
+              <Icon style={{backgroundColor:'red'}} name="person" />
             </Button>
           </Left>
           <Body>
             <Text>
-              {data.PhoneNumbers}
+              {data.name}
             </Text>
             <Text numberOfLines={1} note>
-              {data.Name}
+              {data.phone}
             </Text>
           </Body>
-          <Right>
-          {Platform.OS === "ios" && <Icon active name="car" style={{fontSize: 30}}/>}
-          {Platform.OS === "android" && <Icon active name="car" style={{fontSize: 30}}/>}
-          </Right>
+
           </ListItem>}
+
         renderLeftHiddenRow={data =>
           <Button
             full
-            onPress={() => this.props.navigation.navigate('OrderEdit', { orderId:data.Name })}
+            onPress={() => this.props.navigation.navigate('OrderEdit', { contactId:data.id })}
             style={{
               backgroundColor: "#CCC",
               flex: 1,
@@ -106,22 +123,9 @@ class CustomerSearch extends Component {
           >
             <Icon active name="create" style={{color:"#f7931e"}} />
           </Button>}
-        renderRightHiddenRow={(data, secId, rowId, rowMap) =>
-          <Button
-            full
-            danger
-            onPress={_ => this.deleteRow(secId, rowId, rowMap)}
-            style={{
-              backgroundColor: "#CCC",
-              flex: 1,
-              alignItems: "center",
-              justifyContent: "center"
-            }}
-          >
-            <Icon active name="trash"  style={{color:'red'}}/>
-          </Button>}
+
         leftOpenValue={75}
-        rightOpenValue={-75}
+
       />
     </Content>
 
