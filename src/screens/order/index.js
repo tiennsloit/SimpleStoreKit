@@ -292,15 +292,15 @@ class OrderEdit extends Component {
       <Tab
             tabStyle={{ backgroundColor: 'red' }}
             activeTabStyle={{ backgroundColor: 'blue' }}
-            heading={<TabHeading style={this.state.currentTab === 0 ? styles.activeTabStyle : styles.tabStyle}><Icon name="camera" />
-            <Text>Camera</Text></TabHeading>}>
+            heading={<TabHeading style={this.state.currentTab === 0 ? styles.activeTabStyle : styles.tabStyle}><Icon name="paper" />
+            <Text>Order detail</Text></TabHeading>}>
 
         <Tab1 />
       </Tab>
       <Tab
             tabStyle={{ backgroundColor: 'red' }}
             activeTabStyle={{ backgroundColor: 'blue' }}
-            heading={<TabHeading style={this.state.currentTab === 1 ? styles.activeTabStyle : styles.tabStyle}><Text>No Icon</Text></TabHeading>}>
+            heading={<TabHeading style={this.state.currentTab === 1 ? styles.activeTabStyle : styles.tabStyle}><Icon name="person" /><Text>Contacts</Text></TabHeading>}>
 
         <Tab2 />
       </Tab>
