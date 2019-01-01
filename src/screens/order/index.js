@@ -3,6 +3,7 @@ import {Alert,ScrollView, Dimensions} from "react-native";
 import { BarCodeScanner, Permissions } from 'expo';
 import { Col, Row, Grid } from 'react-native-easy-grid';
 import { StyleSheet } from 'react-native';
+import { StatusBar} from 'react-native';
 
 import {
   Container,
@@ -435,6 +436,9 @@ else {
     return (
       <Container style={styles.container}>
         <Header androidStatusBarColor='#8b4cce'>
+        <StatusBar
+                            backgroundColor="#3b1069"
+                            barStyle="light-content" />
         <Left>
           <Button transparent onPress={() => this.props.navigation.navigate("Orders")}>
             <Icon name="arrow-back" />

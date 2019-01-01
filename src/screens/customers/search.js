@@ -3,7 +3,7 @@ import { ListView } from "react-native";
 import { Contacts } from 'expo';
 import { Permissions } from 'expo';
 import { Platform } from 'react-native';
-
+import { StatusBar} from 'react-native';
 import {
   Container,
   Header,
@@ -141,7 +141,10 @@ class CustomerSearch extends Component {
 
     return (
       <Container style={styles.container}>
-        <Header searchBar rounded androidStatusBarColor='#8b4cce' androidBarStyle="light-content">
+        <Header searchBar rounded>
+        <StatusBar
+                            backgroundColor="#3b1069"
+                            barStyle="light-content" />
           <Item>
             <Icon active name="search" />
             <Input placeholder="Search" />

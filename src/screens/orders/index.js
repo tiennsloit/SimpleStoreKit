@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { ListView } from "react-native";
 import { Platform } from "react-native";
+import { StatusBar} from 'react-native';
 import {
   Container,
   Header,
@@ -126,6 +127,9 @@ class Orders extends Component {
     return (
       <Container style={styles.container}>
         <Header androidStatusBarColor='#8b4cce'>
+        <StatusBar
+                            backgroundColor="#3b1069"
+                            barStyle="light-content" />
           <Left>
             <Button transparent onPress={() => this.props.navigation.goBack()}>
               <Icon name="arrow-back" />
