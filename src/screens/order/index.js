@@ -2,6 +2,7 @@ import React, { Component} from "react";
 import {Alert,ScrollView, Dimensions} from "react-native";
 import { BarCodeScanner, Permissions } from 'expo';
 import { Col, Row, Grid } from 'react-native-easy-grid';
+import { StyleSheet } from 'react-native';
 
 import {
   Container,
@@ -24,12 +25,16 @@ import {
   Picker,
   CheckBox,
   NumericInput,
-  Spinner
+  Spinner,
+  Tabs,
+  Tab,
+  TabHeading
 
 } from "native-base";
 
 import styles from "./styles";
-
+import Tab1 from "./tab1";
+import Tab2 from "./tab2";
 const datas = [
   {
     route: "FixedLabel",
@@ -112,7 +117,8 @@ class OrderEdit extends Component {
       isPriceValid: true,
       isPaidValid: true,
       isProductTypeValid:true,
-      isReceived: true
+      isReceived: true,
+      currentTab: 0,
     }
   };
 
@@ -270,6 +276,35 @@ class OrderEdit extends Component {
       </Row>
     </ScrollView>
 
+    const styles = StyleSheet.create({
+      activeTabStyle: {
+        backgroundColor: '#AB00B5',
+        color:'red'
+      },
+      tabStyle: {
+        backgroundColor: '#8800A7'
+      }
+    });
+
+    var tabs =
+    <Tabs style={{ elevation: 3}} initialPage={this.state.currentPage} onChangeTab={({ i }) => this.setState({ currentTab: i })}>
+      <Tab
+            tabStyle={{ backgroundColor: 'red' }}
+            activeTabStyle={{ backgroundColor: 'blue' }}
+            heading={<TabHeading style={this.state.currentTab === 0 ? styles.activeTabStyle : styles.tabStyle}><Icon name="camera" />
+            <Text>Camera</Text></TabHeading>}>
+
+        <Tab1 />
+      </Tab>
+      <Tab
+            tabStyle={{ backgroundColor: 'red' }}
+            activeTabStyle={{ backgroundColor: 'blue' }}
+            heading={<TabHeading style={this.state.currentTab === 1 ? styles.activeTabStyle : styles.tabStyle}><Text>No Icon</Text></TabHeading>}>
+
+        <Tab2 />
+      </Tab>
+    </Tabs>
+
 
 
     var contentData =
@@ -392,7 +427,8 @@ else {
   }
   else
   {
-      content = contentData;
+      //content = contentData;
+      content = tabs;
   }
 };
 
