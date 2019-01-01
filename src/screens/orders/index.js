@@ -125,7 +125,7 @@ class Orders extends Component {
 
     return (
       <Container style={styles.container}>
-        <Header>
+        <Header androidStatusBarColor='#8b4cce'>
           <Left>
             <Button transparent onPress={() => this.props.navigation.goBack()}>
               <Icon name="arrow-back" />

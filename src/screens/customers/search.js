@@ -96,7 +96,7 @@ class CustomerSearch extends Component {
           <ListItem icon style={{ paddingLeft: 20 }}>
           <Left>
             <Button>
-              <Icon style={{backgroundColor:'red'}} name="person" />
+              <Icon style={{backgroundColor:'red', color:''}} name="person" />
             </Button>
           </Left>
           <Body>
@@ -137,7 +137,7 @@ class CustomerSearch extends Component {
 
     return (
       <Container style={styles.container}>
-        <Header searchBar rounded>
+        <Header searchBar rounded androidStatusBarColor='#8b4cce'>
           <Item>
             <Icon active name="search" />
             <Input placeholder="Search" />

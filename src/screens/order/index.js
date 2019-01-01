@@ -398,7 +398,7 @@ else {
 
     return (
       <Container style={styles.container}>
-        <Header>
+        <Header androidStatusBarColor='#8b4cce'>
         <Left>
           <Button transparent onPress={() => this.props.navigation.navigate("Orders")}>
             <Icon name="arrow-back" />
