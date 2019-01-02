@@ -21,7 +21,8 @@ import {
   Body
 } from "native-base";
 import styles from "./styles";
-import Counter from "./counter"
+import Counter from "./counter";
+import SimpleForm from "../../components/SimpleForm.js";
 
 const data = [
 
@@ -140,7 +141,11 @@ class CustomerSearch extends Component {
 
     var counter = <Counter/>
 
-    var content = this.state.isLoading? spinner: counter;
+    var simpleFormTest = <SimpleForm/>
+
+    var content = this.state.isLoading? spinner: simpleFormTest;
+
+
 
     return (
       <Container style={styles.container}>
@@ -156,9 +161,11 @@ class CustomerSearch extends Component {
           <Button transparent>
             <Text>Search</Text>
           </Button>
-        </Header>
+        </Header>        
 
-        {content}
+        {counter}
+
+        {simpleFormTest}
 
       </Container>
 
