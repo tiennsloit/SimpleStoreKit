@@ -21,6 +21,7 @@ import {
   Body
 } from "native-base";
 import styles from "./styles";
+import Counter from "./counter"
 
 const data = [
 
@@ -137,7 +138,9 @@ class CustomerSearch extends Component {
       <Spinner color="#f7931e" />
     </Content>;
 
-    var content = this.state.isLoading? spinner: contentData;
+    var counter = <Counter/>
+
+    var content = this.state.isLoading? spinner: counter;
 
     return (
       <Container style={styles.container}>
