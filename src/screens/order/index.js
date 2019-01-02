@@ -445,7 +445,7 @@ else {
           </Button>
         </Left>
           <Body>
-            <Title>{this.props.navigation.state.params.orderId > 0 ? 'Sửa đơn hàng' : 'Tạo đơn hàng'}</Title>
+            <Title>{this.props.navigation.state.params.orderId > 0 ? 'Edit Order 1' : 'Create Order'}</Title>
           </Body>
           <Right />
         </Header>
