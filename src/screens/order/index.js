@@ -36,6 +36,7 @@ import {
 import styles from "./styles";
 import Tab1 from "./tab1";
 import Tab2 from "./tab2";
+import InitOrderDetailForm from "./initOrderDetailForm";
 const datas = [
   {
     route: "FixedLabel",

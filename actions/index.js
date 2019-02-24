@@ -8,3 +8,9 @@ export function decrement(){
     type: "Decrement"
   };
 }
+export function loadOrderDetail()
+{
+  return{
+    type: "LoadOrderDetail"
+  }
+}
