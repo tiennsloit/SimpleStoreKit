@@ -1,8 +1,9 @@
 {
   "expoServerPort": 19000,
   "packagerPort": 19001,
-  "packagerPid": 1292,
-  "expoServerNgrokUrl": "https://tm-hwf.tiennsloit.simplestorekit.exp.direct",
-  "packagerNgrokUrl": "https://packager.tm-hwf.tiennsloit.simplestorekit.exp.direct",
-  "ngrokPid": 1307
+  "packagerPid": 47455,
+  "expoServerNgrokUrl": "https://7c-cyv.tiennsloit.simplestorekit.exp.direct",
+  "packagerNgrokUrl": "https://packager.7c-cyv.tiennsloit.simplestorekit.exp.direct",
+  "ngrokPid": 47470,
+  "devToolsPort": 19003
 }
